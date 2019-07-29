@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
+		<script type="text/javascript" src="js/jquery-1.10.2.min.js" ></script>
+	<script type="text/javascript" src="bootstrap-3.3.7-dist/js/bootstrap.min.js" ></script>
+	<style>
+		.body{
+			margin: 0 auto;
+			width: 60%;
+		}
+		.comments{
+			margin: 0 auto;
+			width: 48%;
+			
+		}
+		.body .content {
+			text-align: center;
+		}
+		.body .content img{
+			margin-top: 5%;
+			width: 700px;
+			height: 426px;
+		}
+		.body .title{
+			margin-left: 15%;
+			margin-bottom: 30px;
+			width: 75%;
+		}
+		.body .title h2{
+			margin-bottom: 10px;
+		}
+		.body .text{
+			margin: 0 auto;
+			width: 70%;
+		}
+		.panel {
+			position: relative;
+			top: 50px;
+			
+		}
+		.comments .ttable{
+	
+			width: 95%;
+			margin: 10px auto ;
+			padding-bottom: 10px;
+			
+		}
+		
+		.comments .ttable .name{
+			color: 	#eb7350;
+		}
+	</style>
+	</head>
+	<body>
+		
+		<nav class="navbar navbar-default navbar-fixed-top">
+		  <div class="container-fluid">
+		    <!-- Brand and toggle get grouped for better mobile display -->
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		      <a class="navbar-brand" href="javascript:void(0)"></a>
+		    </div>
+		
+		    <!-- Collect the nav links, forms, and other content for toggling -->
+		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		      <ul class="nav navbar-nav">
+		        <li class="active"><a href="index.html">首页 <span class="sr-only">(current)</span></a></li>
+		        <li><a href="articlList.html">文章列表</a></li>
+		      </ul>
+		      <ul class="nav navbar-nav navbar-right">
+        		<li><a href="addArticle.html"><span class="glyphicon glyphicon-plus"></span></a></li>
+        	</ul>
+		    </div><!-- /.navbar-collapse -->
+		  </div><!-- /.container-fluid -->
+	</nav>
+	<div class="body">
+		<!--<div class="content">
+	 	<img src="img\game.jpg" />
+	 	</div>
+	 	<div class="title">
+	 		<h2>java语言中的异常处理</h2>
+	 		<span class="date" >发布于：2018-04-07</span>
+	 	</div>
+	 	<div class="text">
+	 		异常的概念：java程序在编译或运行过程出现的意外情况。
+类型转换异常
+数组越界异常
+空指针异常
+算术运算异常…
+Throwable–Error
+–Exception:
+1.编译器异常Exception：
+日期类型转换异常，文件找不到异常
+转换异常：ParseException
+文件找不到异常：FileNotFoundException
+2.运行时异常RuntimeException：程序运行时出现的异常
+类型转换异常：ClassCaxtException、
+数组越界异常：ArrayIndexOutOfBoundException
+空指针异常：NullPointerException
+算术运算异常：ArithmeticException
+数字格式化异常：NumberFormatException
+例如： 0不能做除数
+3/0 零不能作除数的异常
+异常的处理：
+异常的处理方式
+1>抛出异常throws关键字
+抛出异常只是把当前方法的异常，抛给了上一级地调用它的方法，最终还是要进行异常的处理
+--------------------- 
+
+	 	</div>-->
+	</div>
+
+	</div>
+	<div class="comments">
+		<div class="panel panel-default">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">评论</div>
+
+  <!-- List group -->
+	 <!--<table class="table">
+	 	<tr>
+	 		<div class="ttable">
+	 		<div><span class="name">张三</span>：<span class="text">好滴地方大师傅的发生的发生好好好好好好好好好好好好</span></div>
+	 		<div>2019-04-27 16:49:47</div>
+	 		</div>
+	 	</tr>
+	
+  	</table>-->
+	<ul class="list-group">
+    <!--<li class="list-group-item">
+    	<div class="ttable">
+	 		<div><span class="name">张三</span>：<span class="text">好滴地方大师傅的发生的发生好好好好好好好好好好好好</span></div>
+	 		<div>2019-04-27 16:49:47</div>
+	 		</div>
+    </li>-->
+  </ul>
+	</div>
+			
+	</body>
+	<script>
+		$(function(){
+			var local=window.localStorage;
+			var id=local.getItem("id");
+			$.post("http://localhost:8080/Article/queryById",{"id":id},function(res){
+			    //添加文本内容
+				var text='<div class="content"><img src="img/'+res.image+'" /></div>'+
+	 					'<div class="title"><h2>'+res.title+'</h2><span class="date" >发布于：'+res.createAt+'</span></div>'+
+	 					'<div class="text">'+res.content+'</div>';
+	 						
+				$(".body").append(text);
+						
+							
+		});
+		
+		$.post("http://localhost:8080/Comment/findCoByAid",{"acId":id},function(res){
+			console.log(res);
+			$.each(res, function(k,v) {
+				//添加评论
+				var text='<li class="list-group-item"><div class="ttable"><div><span class="name">'+v.name+'</span>：'+
+				'<span class="text">'+v.comment+'</span></div><div>'+v.createAt+'</div></div></li>';
+	 						
+				$(".list-group").append(text);
+				
+			});
+ 
+			    
+						
+							
+		});
+		
+		});
+	</script>
+</html>
+

@@ -1,0 +1,101 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/blog?characterEncoding=utf-8
+    username: root
+    password: root
+    #    配置druid连接池
+    type: com.alibaba.druid.pool.DruidDataSource
+
+    druid:
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+        #session统计功能
+#        session-stat-enable: true
+#        #最大session数
+#        session-stat-max-count: 100000
+#        #你可以配置principalSessionName，使得druid能够知道当前的session的用户是谁
+#        principal-session-name: admin
+#        #你可以配置principalSessionName，使得druid能够知道当前的cookie的用户是谁
+#        principal-cookie-name: admin
+#        #置profileEnable能够监控单个url调用的sql列表。
+#        profile-enable: true
+
+## StatViewServlet配置，说明请参考Druid Wiki，配置_StatViewServlet配置
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: true
+        login-username: root
+        login-password: root
+#        白名单
+#        allow: 127.0.0.1
+#        黑名单
+#        deny: 192.168.10.1
+## Spring监控配置，说明请参考Druid Github Wiki，配置_Druid和Spring关联监控配置
+# Spring监控AOP切入点，如x.y.z.service.*,配置多个英文逗号分隔
+
+      aop-patterns: com.example.blog.service.*
+
+#配置wall filter
+      filter:
+        wall:
+          enabled: true
+          db-type: mysql
+          config:
+            alter-table-allow: false
+            truncate-allow: false
+            drop-table-allow: false
+#是否允许非以上基本语句的其他语句，缺省关闭，通过这个选项就能够屏蔽DDL。
+            none-base-statement-allow: false
+#检查UPDATE语句是否无where条件，这是有风险的，但不是SQL注入类型的风险
+            update-where-none-check: true
+#SELECT ... INTO OUTFILE 是否允许，这个是mysql注入攻击的常见手段，缺省是禁止的
+            select-into-outfile-allow: false
+#是否允许调用Connection.getMetadata方法，这个方法调用会暴露数据库的表信息
+            metadata-allow: true
+#对被认为是攻击的SQL进行LOG.error输出
+            log-violation: true
+#对被认为是攻击的SQL抛出SQLExcepton
+            throw-exception: true
+
+
+
+      filters: stat
+      max-active: 20
+      initial-size: 1
+      min-idle: 3
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      validationQuery: select 'x'
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 20
+
+#    配置mybatis
+mybatis:
+#配置mapper.xml所在路径
+  mapper-locations: classpath:/mapping/*.xml
+# 配置映射类所在的包名：
+  type-aliases-package: com.example.blog.po
+#输出sql语句
+ # configuration:
+  #  log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+#pagehelper分页插件
+pagehelper:
+   helperDialect: mysql
+   reasonable: true
+   supportMethodsArguments: true
+   params: count=countSql
+   close-conn: true
+
+
+
+

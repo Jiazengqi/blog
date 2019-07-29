@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
+		<script type="text/javascript" src="js/jquery-1.10.2.min.js" ></script>
+	<script type="text/javascript" src="bootstrap-3.3.7-dist/js/bootstrap.min.js" ></script>
+	<style>
+		a:link{
+			text-decoration:none;
+		}
+		
+		
+		.collapse .nav li{
+			width: 200px;
+			font-size: 20px;
+		}
+		.body,#page{
+			margin: 0 auto;
+			width: 60%;
+			
+		}
+		.context .title{
+			margin-top: 20px;
+			margin-left: 30px;
+			margin-bottom: 10px;
+			display:inline-block;
+			width: 70%;
+			
+		}
+		.context .title h3{
+			position: relative;
+			top: 18px;
+
+		}
+		.context .title a{
+			color: #3d3d3d;
+		}
+		.context .title a:hover {color: red; text-decoration:no;}
+		.context .title .date{
+			top:20px;
+			position: relative;
+			
+		}
+		.context{
+			border-bottom: solid 1px #e5e5e5;
+		}
+		.context .content{
+			margin-left: 20px;
+			margin-top: 30px;
+			display:inline;
+			
+		}
+		.context .content img{
+			margin-top: 20px;
+			margin-bottom: 20px;
+			width: 158px;
+			height: 102px;
+		}
+		.context .content span{
+			margin-bottom: 4px;
+		    color: #8a8a8a;
+		    font-size: 14px;
+		    line-height: 24px;
+		}
+	</style>
+	</head>
+	<body>
+		
+		<nav class="navbar navbar-default">
+		  <div class="container-fluid">
+		    <!-- Brand and toggle get grouped for better mobile display -->
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		      <a class="navbar-brand" href="javascript:void(0)"></a>
+		    </div>
+		
+		    <!-- Collect the nav links, forms, and other content for toggling -->
+		    <div class="collapse navbar-collapse navbar-fixed-top" id="bs-example-navbar-collapse-1">
+		      <ul class="nav navbar-nav">
+		        <li class="active"><a href="index.html">首页 <span class="sr-only">(current)</span></a></li>
+		        <li><a href="#" >文章列表</a></li>
+		      </ul>
+		      <ul class="nav navbar-nav navbar-right">
+        		<li><a href="addArticle.html"><span class="glyphicon glyphicon-plus"></span></a></li>
+        	</ul>
+		    </div><!-- /.navbar-collapse -->
+		  </div><!-- /.container-fluid -->
+	</nav>
+	<div class="body">
+	 <!--<div class="context">
+	 	<div class="content">
+	 	<img src="img\game.jpg" />
+	 	</div>
+	 	<div class="title">
+	 		<h3>
+	 		<a href="javascript:void(0)" class="1">java语言中的异常处理</a></h3>
+	 		<span class="date" >发布于：2018-04-07</span>
+	 	</div>
+	 </div>-->
+	</div>
+	<nav aria-label="Page navigation" id="page">
+  <ul class="pagination">
+    
+   
+  </ul>
+</nav>
+		
+	</body>
+	<script>
+		$(function(){
+		$.post("http://localhost:8080/Article/first",null,function(res){
+				var list=res.list;
+			              $.each(list, function(k,v) {
+							var text='<div class="context"><div class="content"><img src="img/'+v.image+'"/></div>'+
+	 								'<div class="title"><h3><a href="javascript:void(0)" class="test" data-id="'+v.id+'">'+v.title+'</a></h3>'+
+	 								'<span class="date" >发布于：'+v.createAt+'</span></div></div>';
+	 						
+							$(".body").append(text).find("a").click(function(){
+								var local=window.localStorage;
+								var id=$(this).data("id");
+								local.setItem("id",id);
+								window.location.href="article.html";
+							});
+							});
+							
+		});
+		
+		$.post("http://localhost:8080/Article/article",{"page":1},function(res){
+		
+				var page=res.pages;
+				
+				for(var i=0;i<page;i++){
+					var text='<li><a href="javascript:void(0);" data-no="'+(i+1)+'">'+(i+1)+'</a></li>';
+					$(".pagination").append(text).find("a").click(function(){
+						var no=$(this).data("no");
+						$.post("http://localhost:8080/Article/article",{"page":no},function(res){
+						var list=res.list;
+						$(".body").empty();
+					              $.each(list, function(k,v) {
+									var text='<div class="context"><div class="content"><img src="img/'+v.image+'"/></div>'+
+			 								'<div class="title"><h3><a href="javascript:void(0)" class="test" data-id="'+v.id+'">'+v.title+'</a></h3>'+
+			 								'<span class="date" >发布于：'+v.createAt+'</span></div></div>';
+			 						
+									$(".body").append(text).find("a").click(function(){
+										var local=window.localStorage;
+										var id=$(this).data("id");
+										local.setItem("id",id);
+										window.location.href="article.html";
+									});
+									});
+							
+		});
+						
+					});
+				}
+		});
+		
+   	});
+	</script>
+</html>

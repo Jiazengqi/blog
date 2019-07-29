@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
+		<script type="text/javascript" src="js/jquery-1.10.2.min.js" ></script>
+	<script type="text/javascript" src="bootstrap-3.3.7-dist/js/bootstrap.min.js" ></script>
+	<style>
+		.collapse .nav li{
+			width: 200px;
+			font-size: 20px;
+		}
+		.body{
+			margin: 0 auto;
+			width: 60%;
+			
+		}
+		
+	</style>
+	</head>
+	<body>
+		
+		<nav class="navbar navbar-default">
+		  <div class="container-fluid">
+		    <!-- Brand and toggle get grouped for better mobile display -->
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		      <a class="navbar-brand" href="javascript:void(0)"></a>
+		    </div>
+		
+		    <!-- Collect the nav links, forms, and other content for toggling -->
+		    <div class="collapse navbar-collapse navbar-fixed-top" id="bs-example-navbar-collapse-1">
+		      <ul class="nav navbar-nav">
+		        <li class="active"><a href="index.html">首页 <span class="sr-only">(current)</span></a></li>
+		        <li><a href="articlList.html" >文章列表</a></li>
+		      </ul>
+		      <ul class="nav navbar-nav navbar-right">
+        		<li><a href="addArticle.html"><span class="glyphicon glyphicon-plus"></span></a></li>
+        	</ul>
+		    </div><!-- /.navbar-collapse -->
+		  </div><!-- /.container-fluid -->
+	</nav>
+	<div class="body">
+	 <div class="context">
+		<form class="form-horizontal" id="form1">
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-2 control-label">标题</label>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" name="title" id="inputEmail3" placeholder="标题">
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputPassword3" class="col-sm-2 control-label">内容</label>
+		    <div class="col-sm-10">
+		      <textarea class="form-control" name="content" rows="3"></textarea>
+		    </div>
+		  </div>
+		   <div class="form-group">
+		    <label for="exampleInputFile" class="col-sm-2 control-label">添加图片</label>
+		    <input type="file" name="file" id="exampleInputFile"class="col-sm-10">
+		    <!--<p class="help-block">Example block-level help text here.</p>-->
+		  </div>
+		  <div class="form-group">
+		    <div class="col-sm-offset-2 col-sm-10">
+		      <button type="submit" class="btn btn-success" id="btns">提交</button>
+		    </div>
+		  </div>
+		</form>
+	 </div>
+	</div>
+		<script>
+			$("#btns").click(function(){
+		   var formData = new FormData($( "#form1" )[0]); 
+		   console.log(formData);
+          $.ajax({
+              type: "POST",
+              contentType: false, 
+              processData: false,
+              url:"http://127.0.0.1:8080/Article/add",  //url
+              data:formData,
+              async: false,
+              error: function(request) {
+                  alert("出错了");
+              },
+              success: function(res) {
+              	
+              	window.location.href="index.html";
+              }
+         });
+
+	});
+		</script>
+	</body>
+	
+</html>
