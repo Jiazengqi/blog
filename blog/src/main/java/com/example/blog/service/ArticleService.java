@@ -57,4 +57,18 @@ public class ArticleService {
        }
        return resultList;
     }
+
+    //修改
+    public ResultList modifyArticle(Article article){
+        ResultList resultList=new ResultList();
+        article.setCreateAt(new Timestamp(System.currentTimeMillis()));
+       int a= articleMapper.updateByPrimaryKeySelective(article);
+       if(a>0){
+           resultList.setStatus("500");
+           resultList.setMsg("修改成功");
+       }else {
+           resultList.setMsg("修改失败");
+       }
+       return resultList;
+    }
 }

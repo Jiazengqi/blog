@@ -54,37 +54,55 @@
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-2 control-label">标题</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control" name="title" id="inputEmail3" placeholder="标题">
+		    	<input type="hidden" id="id" name="id" />	
+		      <input type="text" class="form-control" name="title" id="title">
 		    </div>
 		  </div>
 		  <div class="form-group">
 		    <label for="inputPassword3" class="col-sm-2 control-label">内容</label>
 		    <div class="col-sm-10">
-		      <textarea class="form-control" name="content" rows="3"></textarea>
+		      <textarea class="form-control" name="content" id="content" rows="3"></textarea>
 		    </div>
 		  </div>
 		   <div class="form-group">
 		    <label for="exampleInputFile" class="col-sm-2 control-label">添加图片</label>
-		    <input type="file" name="file" id="exampleInputFile"class="col-sm-10">
+		    <input type="file" name="file"  class="col-sm-10">
+		    <!--<p class="help-block">Example block-level help text here.</p>-->
+		  </div>
+		   <div class="form-group">
+		    <label for="exampleInputFile" class="col-sm-2 control-label">添加图片</label>
+		    <input type="hidden" name="image" id="image1" />
+		    <img  class="col-sm-10"  id="image"  />
 		    <!--<p class="help-block">Example block-level help text here.</p>-->
 		  </div>
 		  <div class="form-group">
 		    <div class="col-sm-offset-2 col-sm-10">
-		      <button type="submit" class="btn btn-success" id="btns">提交</button>
+		      <button type="submit" class="btn btn-success" id="btns">修改</button>
 		    </div>
 		  </div>
 		</form>
 	 </div>
 	</div>
 		<script>
-			$("#btns").click(function(){
+			$(function(){
+				var local=window.localStorage;
+				var id=local.getItem("id");
+				$.post("http://localhost:8080/Article/aticle/1",{"id":id},function(res){
+			 	$("#id").val(res.id)
+			 	$("#title").val(res.title);
+			 	$("#content").val(res.content);
+			 	$("#image1").val(res.image);
+			 	$("#image").attr("src",res.image);				
+			});	
+			
+		$("#btns").click(function(){
 		   var formData = new FormData($( "#form1" )[0]); 
 		   console.log(formData);
           $.ajax({
               type: "POST",
               contentType: false, 
               processData: false,
-              url:"http://127.0.0.1:8080/Article/article/post",  //url
+              url:"http://127.0.0.1:8080/Article/article/12",  //url
               data:formData,
               async: false,
               error: function(request) {
@@ -97,6 +115,8 @@
          });
 
 	});
+			});
+		
 		</script>
 	</body>
 	

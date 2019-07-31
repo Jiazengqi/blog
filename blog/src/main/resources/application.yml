@@ -77,6 +77,14 @@ spring:
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
 
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+  mvc:
+    static-path-pattern: /image/**
+  resources:
+    static-locations: file:H://IdeaProjects//blog//img/
 #    配置mybatis
 mybatis:
 #配置mapper.xml所在路径
@@ -95,6 +103,11 @@ pagehelper:
    supportMethodsArguments: true
    params: count=countSql
    close-conn: true
+
+
+
+
+
 
 
 

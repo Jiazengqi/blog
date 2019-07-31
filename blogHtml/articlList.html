@@ -117,10 +117,10 @@
 	</body>
 	<script>
 		$(function(){
-		$.post("http://localhost:8080/Article/first",null,function(res){
+		$.post("http://localhost:8080/Article/",null,function(res){
 				var list=res.list;
 			              $.each(list, function(k,v) {
-							var text='<div class="context"><div class="content"><img src="img/'+v.image+'"/></div>'+
+							var text='<div class="context"><div class="content"><img src="'+v.image+'"/></div>'+
 	 								'<div class="title"><h3><a href="javascript:void(0)" class="test" data-id="'+v.id+'">'+v.title+'</a></h3>'+
 	 								'<span class="date" >发布于：'+v.createAt+'</span></div></div>';
 	 						
@@ -134,7 +134,7 @@
 							
 		});
 		
-		$.post("http://localhost:8080/Article/article",{"page":1},function(res){
+		$.post("http://localhost:8080/Article/1",{"page":1},function(res){
 		
 				var page=res.pages;
 				
@@ -142,7 +142,7 @@
 					var text='<li><a href="javascript:void(0);" data-no="'+(i+1)+'">'+(i+1)+'</a></li>';
 					$(".pagination").append(text).find("a").click(function(){
 						var no=$(this).data("no");
-						$.post("http://localhost:8080/Article/article",{"page":no},function(res){
+						$.post("http://localhost:8080/Article/1",{"page":no},function(res){
 						var list=res.list;
 						$(".body").empty();
 					              $.each(list, function(k,v) {
